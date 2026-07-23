@@ -244,11 +244,8 @@
             align-items: center;
             gap: 6px;
         }
-        .btn:hover {
-            background-color: #0f1a24;
-        }
 
-        /* Floating Music Widget untuk Mobile */
+        /* Floating Music Widget */
         .music-widget {
             position: fixed;
             bottom: 20px;
@@ -323,7 +320,7 @@
         }
     </style>
 </head>
-<body onclick="enableAudioOnTouch()">
+<body>
 
     <!-- Tombol Cetak Top Bar -->
     <div class="action-bar">
@@ -454,43 +451,57 @@
         <button id="musicBtn" class="btn-music" onclick="toggleMusic(event)">
             🎵 Putar Musik Suasana
         </button>
-        <!-- Menggunakan multi-format audio MP3 + OGG kompatibel semua HP/Browser -->
-        <audio id="bgMusic" loop preload="auto">
+        
+        <!-- TAG AUDIO DENGAN AUTOPLAY DITAMBAHKAN -->
+        <audio id="bgMusic" loop autoplay preload="auto">
             <source src="https://ia800908.us.archive.org/24/items/HariMerdeka/Hari%20Merdeka.mp3" type="audio/mpeg">
             <source src="https://upload.wikimedia.org/wikipedia/commons/2/23/Hari_Merdeka.ogg" type="audio/ogg">
         </audio>
     </div>
 
-    <!-- JavaScript Handlers Musik Kompatibel HP -->
+    <!-- JavaScript Autoplay Handler -->
     <script>
         var music = document.getElementById("bgMusic");
         var btn = document.getElementById("musicBtn");
-        var isAudioUnlocked = false;
+        var autoPlayed = false;
 
+        function startPlay() {
+            music.play().then(() => {
+                btn.innerHTML = "⏸️ Hentikan Musik";
+                autoPlayed = true;
+            }).catch(() => {
+                // Autoplay diblokir browser sebelum ada interaksi
+            });
+        }
+
+        // Coba putar otomatis saat halaman selesai dimuat
+        window.addEventListener("DOMContentLoaded", () => {
+            startPlay();
+        });
+
+        // Trigger otomatis begitu pengguna menyentuh/mengklik layar di mana saja
+        document.addEventListener("click", () => {
+            if (!autoPlayed && music.paused) {
+                startPlay();
+            }
+        }, { once: true });
+
+        document.addEventListener("touchstart", () => {
+            if (!autoPlayed && music.paused) {
+                startPlay();
+            }
+        }, { once: true });
+
+        // Tombol manual On/Off
         function toggleMusic(event) {
-            if (event) event.stopPropagation(); // Mencegah bentrok event
+            if (event) event.stopPropagation();
             
             if (music.paused) {
-                music.play().then(() => {
-                    btn.innerHTML = "⏸️ Hentikan Musik";
-                }).catch(function(error) {
-                    alert("Klik layar sekali lagi untuk mengaktifkan izin audio di browser HP Anda.");
-                });
+                music.play();
+                btn.innerHTML = "⏸️ Hentikan Musik";
             } else {
                 music.pause();
                 btn.innerHTML = "🎵 Putar Musik Suasana";
-            }
-        }
-
-        /* Mengatasi Pemblokiran Autoplay di HP / Mobile */
-        function enableAudioOnTouch() {
-            if (!isAudioUnlocked && music.paused) {
-                music.play().then(() => {
-                    btn.innerHTML = "⏸️ Hentikan Musik";
-                    isAudioUnlocked = true;
-                }).catch(function(e) {
-                    // Masih terblokir sampai tombol diklik manual
-                });
             }
         }
     </script>
