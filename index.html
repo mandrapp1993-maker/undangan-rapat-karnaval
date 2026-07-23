@@ -2,9 +2,9 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Surat Undangan Premium RT 06</title>
-    <!-- Google Fonts untuk Typography Premium -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
@@ -28,21 +28,22 @@
             color: var(--text-color);
             background-color: var(--bg-color);
             margin: 0;
-            padding: 30px 0;
+            padding: 20px 10px;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
 
-        /* Container Lembar A4 Premium */
+        /* Container Lembar A4 / Mobile Responsive */
         .surat-card {
             position: relative;
-            width: 210mm;
+            width: 100%;
+            max-width: 210mm;
             min-height: 297mm;
             padding: 22mm 22mm;
             margin: 0 auto;
             background: #ffffff;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
-            border-radius: 2px;
+            border-radius: 4px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
@@ -56,8 +57,8 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 320px;
-            height: 320px;
+            width: 300px;
+            height: 300px;
             background: url('https://upload.wikimedia.org/wikipedia/commons/9/90/National_emblem_of_Indonesia_Garuda_Pancasila.svg') no-repeat center center;
             background-size: contain;
             opacity: 0.03;
@@ -80,7 +81,7 @@
         }
         .kop-surat h2 {
             font-family: 'Cinzel', serif;
-            font-size: 16pt;
+            font-size: 15.5pt;
             font-weight: 700;
             color: var(--primary-color);
             margin: 0;
@@ -88,7 +89,7 @@
         }
         .kop-surat h3 {
             font-family: 'Montserrat', sans-serif;
-            font-size: 11.5pt;
+            font-size: 11pt;
             font-weight: 600;
             color: var(--accent-color);
             margin: 4px 0;
@@ -125,6 +126,7 @@
             width: 100%;
             margin-bottom: 25px;
             font-size: 10.5pt;
+            border-collapse: collapse;
         }
         .meta-surat td {
             vertical-align: top;
@@ -161,13 +163,14 @@
             width: 100%;
             font-size: 10pt;
             font-family: 'Montserrat', sans-serif;
+            border-collapse: collapse;
         }
         .box-acara td {
             padding: 5px 0;
             vertical-align: top;
         }
         .box-acara td.label {
-            width: 25%;
+            width: 28%;
             font-weight: 600;
             color: var(--primary-color);
         }
@@ -177,6 +180,7 @@
             width: 100%;
             margin-top: 45px;
             page-break-inside: avoid;
+            border-collapse: collapse;
         }
         .ttd-wrapper td {
             text-align: center;
@@ -215,18 +219,20 @@
             font-style: normal;
         }
 
-        /* Tombol Cetak */
+        /* Tombol Cetak & Musik Bar */
         .action-bar {
-            width: 210mm;
-            margin: 0 auto 20px auto;
+            width: 100%;
+            max-width: 210mm;
+            margin: 0 auto 15px auto;
             display: flex;
             justify-content: flex-end;
+            gap: 10px;
         }
         .btn {
             font-family: 'Montserrat', sans-serif;
             font-size: 9pt;
             font-weight: 600;
-            padding: 10px 20px;
+            padding: 10px 18px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -234,44 +240,66 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             background-color: var(--primary-color);
             color: #fff;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
         .btn:hover {
             background-color: #0f1a24;
-            transform: translateY(-1px);
         }
 
-        /* Widget Pemutar Musik */
+        /* Floating Music Widget untuk Mobile */
         .music-widget {
             position: fixed;
-            bottom: 25px;
-            right: 25px;
+            bottom: 20px;
+            right: 20px;
             z-index: 9999;
         }
         .btn-music {
             font-family: 'Montserrat', sans-serif;
-            font-size: 9pt;
+            font-size: 8.5pt;
             font-weight: 600;
             background-color: var(--primary-color);
             color: var(--accent-color);
             border: 2px solid var(--accent-color);
-            padding: 12px 20px;
+            padding: 10px 16px;
             border-radius: 30px;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
             display: flex;
             align-items: center;
             gap: 8px;
         }
-        .btn-music:hover {
-            transform: scale(1.05);
-            background-color: #0f1a24;
+
+        /* MEDIA QUERIES (OPTIMASI HP / MOBILE) */
+        @media screen and (max-width: 768px) {
+            body {
+                padding: 10px 5px;
+                font-size: 10pt;
+            }
+            .surat-card {
+                padding: 20px 15px;
+                min-height: auto;
+                height: auto;
+            }
+            .kop-surat h2 { font-size: 12pt; }
+            .kop-surat h3 { font-size: 9pt; }
+            .kop-surat p { font-size: 7.5pt; }
+            .meta-surat { font-size: 9pt; }
+            .meta-surat .tgl {
+                display: block;
+                text-align: left;
+                margin-top: 5px;
+            }
+            .box-acara td.label { width: 35%; }
+            .jabatan { margin-bottom: 50px; }
+            p.paragraf { text-indent: 20px; }
         }
 
-        /* PENGATURAN SPESIFIK CETAK FULL A4 PORTRAIT */
+        /* PENGATURAN CETAK PDF PORTRAIT A4 FULL */
         @page {
             size: A4 portrait;
-            margin: 0mm; /* Menghilangkan margin cetak printer/browser */
+            margin: 0mm;
         }
 
         @media print {
@@ -281,7 +309,6 @@
                 background: #ffffff;
                 margin: 0 !important;
                 padding: 0 !important;
-                overflow: hidden;
             }
             .surat-card {
                 box-shadow: none;
@@ -296,9 +323,9 @@
         }
     </style>
 </head>
-<body>
+<body onclick="enableAudioOnTouch()">
 
-    <!-- Tombol Cetak -->
+    <!-- Tombol Cetak Top Bar -->
     <div class="action-bar">
         <button class="btn" onclick="window.print()">
             🖨️ Cetak / Simpan PDF
@@ -327,9 +354,9 @@
                 <!-- Meta Data Surat -->
                 <table class="meta-surat">
                     <tr>
-                        <td width="12%">Nomor</td>
+                        <td width="15%">Nomor</td>
                         <td width="2%">:</td>
-                        <td width="46%">01/rt06/und/viii/2026</td>
+                        <td width="45%">01/rt06/und/viii/2026</td>
                         <td class="tgl">Bendotretek, 1 Agustus 2026</td>
                     </tr>
                     <tr>
@@ -397,7 +424,7 @@
                 </div>
             </div>
 
-            <!-- Bagian Bawah Surat (Tanda Tangan & Catatan) -->
+            <!-- Bagian Bawah Surat -->
             <div>
                 <!-- Tanda Tangan -->
                 <table class="ttd-wrapper">
@@ -422,29 +449,48 @@
         </div>
     </div>
 
-    <!-- Widget Pemutar Musik Melayang -->
+    <!-- Widget Pemutar Musik -->
     <div class="music-widget">
-        <button id="musicBtn" class="btn-music" onclick="toggleMusic()">
+        <button id="musicBtn" class="btn-music" onclick="toggleMusic(event)">
             🎵 Putar Musik Suasana
         </button>
-        <audio id="bgMusic" loop>
+        <!-- Menggunakan multi-format audio MP3 + OGG kompatibel semua HP/Browser -->
+        <audio id="bgMusic" loop preload="auto">
+            <source src="https://ia800908.us.archive.org/24/items/HariMerdeka/Hari%20Merdeka.mp3" type="audio/mpeg">
             <source src="https://upload.wikimedia.org/wikipedia/commons/2/23/Hari_Merdeka.ogg" type="audio/ogg">
-            Browser Anda tidak mendukung pemutar audio.
         </audio>
     </div>
 
-    <!-- JavaScript Pemutar Musik -->
+    <!-- JavaScript Handlers Musik Kompatibel HP -->
     <script>
-        function toggleMusic() {
-            var music = document.getElementById("bgMusic");
-            var btn = document.getElementById("musicBtn");
+        var music = document.getElementById("bgMusic");
+        var btn = document.getElementById("musicBtn");
+        var isAudioUnlocked = false;
+
+        function toggleMusic(event) {
+            if (event) event.stopPropagation(); // Mencegah bentrok event
             
             if (music.paused) {
-                music.play();
-                btn.innerHTML = "⏸️ Hentikan Musik";
+                music.play().then(() => {
+                    btn.innerHTML = "⏸️ Hentikan Musik";
+                }).catch(function(error) {
+                    alert("Klik layar sekali lagi untuk mengaktifkan izin audio di browser HP Anda.");
+                });
             } else {
                 music.pause();
                 btn.innerHTML = "🎵 Putar Musik Suasana";
+            }
+        }
+
+        /* Mengatasi Pemblokiran Autoplay di HP / Mobile */
+        function enableAudioOnTouch() {
+            if (!isAudioUnlocked && music.paused) {
+                music.play().then(() => {
+                    btn.innerHTML = "⏸️ Hentikan Musik";
+                    isAudioUnlocked = true;
+                }).catch(function(e) {
+                    // Masih terblokir sampai tombol diklik manual
+                });
             }
         }
     </script>
