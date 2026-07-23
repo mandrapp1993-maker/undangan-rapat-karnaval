@@ -10,6 +10,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Library html2pdf.js untuk Direct Download PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <style>
         :root {
             --primary-color: #0f1e2e;   /* Midnight Navy */
@@ -31,8 +34,6 @@
             background-color: var(--bg-body);
             margin: 0;
             padding: 0;
-            -webkit-print-color-adjust: exact;
-            print-color-adjust: exact;
             overflow-x: hidden;
         }
 
@@ -153,10 +154,10 @@
             padding: 25px 10px;
         }
 
+        /* Container Surat Disesuaikan khusus Format A4 */
         .surat-card {
             position: relative;
-            width: 100%;
-            max-width: 210mm;
+            width: 210mm;
             min-height: 297mm;
             padding: 20mm 20mm;
             margin: 0 auto;
@@ -397,10 +398,16 @@
             gap: 8px;
         }
 
-        /* MEDIA QUERIES (MOBILE) */
+        /* MEDIA QUERIES (MOBILE RESPONSIVE) */
         @media screen and (max-width: 768px) {
             .main-wrapper { padding: 10px 5px; }
-            .surat-card { padding: 25px 18px; min-height: auto; height: auto; }
+            .surat-card { 
+                width: 100%;
+                max-width: 100%;
+                padding: 25px 18px; 
+                min-height: auto; 
+                height: auto; 
+            }
             .inner-border { display: none; }
             .kop-surat h2 { font-size: 12pt; }
             .kop-surat h3 { font-size: 8.5pt; }
@@ -408,33 +415,6 @@
             .box-acara td.label { width: 35%; }
             .action-bar { justify-content: center; }
             .btn-group { width: 100%; justify-content: center; flex-wrap: wrap; }
-        }
-
-        /* CETAK PDF A4 FULL */
-        @page {
-            size: A4 portrait;
-            margin: 0mm;
-        }
-
-        @media print {
-            #coverOverlay, .action-bar, .music-widget, .countdown-container {
-                display: none !important;
-            }
-            html, body {
-                width: 210mm;
-                height: 297mm;
-                background: #ffffff;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-            .surat-card {
-                box-shadow: none;
-                padding: 18mm 20mm;
-                width: 210mm;
-                height: 297mm;
-                border: none;
-            }
-            .inner-border { display: block; }
         }
     </style>
 </head>
@@ -462,8 +442,9 @@
         <!-- Bar Tombol Atas -->
         <div class="action-bar">
             <div class="btn-group">
-                <button class="btn btn-primary" onclick="printPDF()">
-                    🖨️ Cetak / PDF
+                <!-- Tombol Berubah menjadi Direct Download PDF -->
+                <button class="btn btn-primary" id="downloadBtn" onclick="downloadPDF()">
+                    📥 Unduh PDF
                 </button>
                 <button class="btn btn-success" onclick="shareToWhatsApp()">
                     💬 Bagikan WA
@@ -476,8 +457,8 @@
             </div>
         </div>
 
-        <!-- Lembar Surat -->
-        <div class="surat-card">
+        <!-- Lembar Surat Utama yang Akan Dikonversi ke PDF -->
+        <div class="surat-card" id="suratElement">
             <div class="inner-border"></div>
 
             <div class="content-wrapper">
@@ -550,8 +531,8 @@
                         </table>
                     </div>
 
-                    <!-- Countdown -->
-                    <div class="countdown-container">
+                    <!-- Countdown (Otomatis disembunyikan saat unduh PDF) -->
+                    <div class="countdown-container" id="countdownWidget">
                         <div class="countdown-title">⏳ Hitung Mundur Menuju Rapat Warga</div>
                         <div class="timer-grid">
                             <div class="timer-box"><span class="timer-num" id="days">00</span><span class="timer-label">Hari</span></div>
@@ -600,7 +581,7 @@
             🎵 <span id="musicText">Hentikan Musik</span>
         </button>
         <audio id="bgMusic" loop preload="auto">
-            <source src="https://ia800908.us.archive.org/24/items/HariMerdeka/Hari%20Merdeka.mp3" type="audio/mpeg">
+            <source src="https://mandrapp1993-maker.github.io/undangan-rapat-karnaval/musik.mp3" type="audio/mpeg">
         </audio>
     </div>
 
@@ -633,7 +614,43 @@
             }
         }
 
-        // 3. Fungsi Bagikan ke WhatsApp
+        // 3. Fungsi Direct Download PDF (Tandai & Sembunyikan elemen non-surat saat proses)
+        function downloadPDF() {
+            var btn = document.getElementById("downloadBtn");
+            var countdown = document.getElementById("countdownWidget");
+            var element = document.getElementById("suratElement");
+
+            // Ubah Teks Tombol Loading
+            btn.innerText = "⏳ Memproses PDF...";
+            btn.disabled = true;
+
+            // Sembunyikan Countdown sementara
+            countdown.style.display = "none";
+
+            // Konfigurasi Kertas PDF A4
+            var opt = {
+                margin:       0,
+                filename:     'Surat_Undangan_Rapat_RT06.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true, logging: false },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Jalankan konversi ke PDF lalu unduh
+            html2pdf().set(opt).from(element).save().then(function() {
+                // Kembalikan tampilan tombol & countdown
+                countdown.style.display = "block";
+                btn.innerText = "📥 Unduh PDF";
+                btn.disabled = false;
+            }).catch(function(err) {
+                alert("Gagal mengunduh PDF, silakan coba lagi.");
+                countdown.style.display = "block";
+                btn.innerText = "📥 Unduh PDF";
+                btn.disabled = false;
+            });
+        }
+
+        // 4. Fungsi Bagikan ke WhatsApp
         function shareToWhatsApp() {
             var message = "*Kepada Yth. Bapak/Ibu/Saudara/i Warga RT 06*\n\n" +
                           "Berikut Surat Undangan Resmi Rapat Musyawarah Karnaval Kemerdekaan RI RT 06 Bendotretek.\n\n" +
@@ -642,16 +659,6 @@
             
             var waUrl = "https://api.whatsapp.com/send?text=" + encodeURIComponent(message);
             window.open(waUrl, '_blank');
-        }
-
-        // 4. Fungsi Cetak PDF (Optimasi HP & Laptop)
-        function printPDF() {
-            var isMobile = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent);
-            
-            if (isMobile) {
-                alert("Petunjuk Simpan PDF di HP:\n1. Tampilan Cetak akan terbuka.\n2. Pilih Printer: 'Simpan sebagai PDF' / 'Save as PDF'.\n3. Pastikan Ukuran Kertas 'A4'.\n4. Klik tombol Simpan/Download.");
-            }
-            window.print();
         }
 
         // 5. Countdown Timer Realtime
