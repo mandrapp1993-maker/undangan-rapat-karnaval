@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surat Undangan Premium RT 06</title>
+    <!-- Google Fonts untuk Typography Premium -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #1a2a3a; /* Dark Navy */
+            --accent-color: #c5a059;  /* Soft Gold */
+            --text-color: #2b2b2b;
+            --bg-color: #eef2f5;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Merriweather', serif;
+            font-size: 11pt;
+            line-height: 1.8;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 30px 0;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* Container Lembar A4 Premium */
+        .surat-card {
+            position: relative;
+            width: 210mm;
+            min-height: 297mm;
+            padding: 22mm 22mm;
+            margin: 0 auto;
+            background: #ffffff;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 2px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Watermark Latar Belakang Transparan */
+        .surat-card::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px;
+            height: 320px;
+            background: url('https://upload.wikimedia.org/wikipedia/commons/9/90/National_emblem_of_Indonesia_Garuda_Pancasila.svg') no-repeat center center;
+            background-size: contain;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            justify-content: space-between;
+        }
+
+        /* Kop Surat Premium */
+        .kop-surat {
+            text-align: center;
+        }
+        .kop-surat h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 16pt;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 0;
+            letter-spacing: 1px;
+        }
+        .kop-surat h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 11.5pt;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin: 4px 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .kop-surat p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 8.5pt;
+            color: #666;
+            margin-top: 5px;
+            font-weight: 400;
+        }
+
+        /* Garis Pemisah Kop Elegan */
+        .garis-kop-container {
+            margin: 15px 0 25px 0;
+        }
+        .garis-utama {
+            border: 0;
+            height: 2.5px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 50%, var(--primary-color) 100%);
+            margin: 0;
+        }
+        .garis-tipis {
+            border: 0;
+            height: 0.5px;
+            background: #ccc;
+            margin: 3px 0 0 0;
+        }
+
+        /* Detail Nomor & Hal */
+        .meta-surat {
+            width: 100%;
+            margin-bottom: 25px;
+            font-size: 10.5pt;
+        }
+        .meta-surat td {
+            vertical-align: top;
+            padding: 3px 0;
+        }
+        .meta-surat .tgl {
+            text-align: right;
+            font-weight: 500;
+        }
+
+        /* Teks Utama */
+        .salam-pembuka, .salam-penutup {
+            margin-bottom: 18px;
+            font-weight: 400;
+        }
+        p.paragraf {
+            text-align: justify;
+            text-indent: 35px;
+            margin-bottom: 18px;
+        }
+
+        /* Box Detail Acara */
+        .box-acara {
+            background-color: #fcfbfa;
+            border-left: 3.5px solid var(--accent-color);
+            border-right: 1px solid #f0eada;
+            border-top: 1px solid #f0eada;
+            border-bottom: 1px solid #f0eada;
+            padding: 18px 22px;
+            margin: 22px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        .box-acara table {
+            width: 100%;
+            font-size: 10pt;
+            font-family: 'Montserrat', sans-serif;
+        }
+        .box-acara td {
+            padding: 5px 0;
+            vertical-align: top;
+        }
+        .box-acara td.label {
+            width: 25%;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        /* Tanda Tangan */
+        .ttd-wrapper {
+            width: 100%;
+            margin-top: 45px;
+            page-break-inside: avoid;
+        }
+        .ttd-wrapper td {
+            text-align: center;
+            width: 50%;
+            vertical-align: top;
+            font-size: 10pt;
+        }
+        .jabatan {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            color: var(--primary-color);
+            margin-bottom: 70px;
+        }
+        .nama-terang {
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        /* Catatan Kaki */
+        .catatan-box {
+            margin-top: 30px;
+            padding: 12px 18px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            font-size: 9pt;
+            font-style: italic;
+            color: #555;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .catatan-box span {
+            font-weight: bold;
+            color: var(--accent-color);
+            font-style: normal;
+        }
+
+        /* Tombol Cetak */
+        .action-bar {
+            width: 210mm;
+            margin: 0 auto 20px auto;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .btn {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 9pt;
+            font-weight: 600;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+        .btn:hover {
+            background-color: #0f1a24;
+            transform: translateY(-1px);
+        }
+
+        /* Widget Pemutar Musik */
+        .music-widget {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            z-index: 9999;
+        }
+        .btn-music {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 9pt;
+            font-weight: 600;
+            background-color: var(--primary-color);
+            color: var(--accent-color);
+            border: 2px solid var(--accent-color);
+            padding: 12px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-music:hover {
+            transform: scale(1.05);
+            background-color: #0f1a24;
+        }
+
+        /* PENGATURAN SPESIFIK CETAK FULL A4 PORTRAIT */
+        @page {
+            size: A4 portrait;
+            margin: 0mm; /* Menghilangkan margin cetak printer/browser */
+        }
+
+        @media print {
+            html, body {
+                width: 210mm;
+                height: 297mm;
+                background: #ffffff;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden;
+            }
+            .surat-card {
+                box-shadow: none;
+                padding: 18mm 20mm;
+                width: 210mm;
+                height: 297mm;
+                border-radius: 0;
+            }
+            .action-bar, .music-widget {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tombol Cetak -->
+    <div class="action-bar">
+        <button class="btn" onclick="window.print()">
+            🖨️ Cetak / Simpan PDF
+        </button>
+    </div>
+
+    <!-- Lembar Surat -->
+    <div class="surat-card">
+        <div class="content-wrapper">
+            
+            <!-- Bagian Atas Surat -->
+            <div>
+                <!-- Kop Surat -->
+                <div class="kop-surat">
+                    <h2>RUKUN TETANGGA 06 / RUKUN WARGA 01</h2>
+                    <h3>KELURAHAN / DESA BENDOTRETEK</h3>
+                    <p>Sekretariat: [Alamat Sekretariat/Rumah RT] &nbsp;|&nbsp; Kontak: [Nomor HP/WA]</p>
+                </div>
+                
+                <!-- Pembatas Garis -->
+                <div class="garis-kop-container">
+                    <div class="garis-utama"></div>
+                    <div class="garis-tipis"></div>
+                </div>
+
+                <!-- Meta Data Surat -->
+                <table class="meta-surat">
+                    <tr>
+                        <td width="12%">Nomor</td>
+                        <td width="2%">:</td>
+                        <td width="46%">01/rt06/und/viii/2026</td>
+                        <td class="tgl">Bendotretek, 1 Agustus 2026</td>
+                    </tr>
+                    <tr>
+                        <td>Lampiran</td>
+                        <td>:</td>
+                        <td>-</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Hal</td>
+                        <td>:</td>
+                        <td><strong>Undangan Rapat Musyawarah Karnaval Kemerdekaan RI</strong></td>
+                        <td></td>
+                    </tr>
+                </table>
+
+                <!-- Pembuka -->
+                <div class="salam-pembuka">
+                    Assalamu’alaikum Warahmatullahi Wabarakatuh,<br>
+                    Salam sejahtera bagi kita semua,
+                </div>
+
+                <!-- Isi Paragraf -->
+                <p class="paragraf">
+                    Dalam rangka menyambut dan memeriahkan Hari Ulang Tahun (HUT) Kemerdekaan Republik Indonesia ke-81, serta persiapan keikutsertaan kontingen warga RT 06 pada kegiatan Karnaval Kemerdekaan yang akan diselenggarakan pada tanggal 16 Agustus 2026, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam rapat koordinasi warga yang akan dilaksanakan pada:
+                </p>
+
+                <!-- Box Detail Acara -->
+                <div class="box-acara">
+                    <table>
+                        <tr>
+                            <td class="label">Hari / Tanggal</td>
+                            <td width="3%">:</td>
+                            <td>[Hari, Tanggal Bulan 2026]</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Waktu</td>
+                            <td>:</td>
+                            <td>19.30 WIB (Ba'da Isya) - Selesai</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Tempat</td>
+                            <td>:</td>
+                            <td>[Lokasi Rapat / Balai Warga / Rumah Ketua RT]</td>
+                        </tr>
+                        <tr>
+                            <td class="label">Agenda Utama</td>
+                            <td>:</td>
+                            <td>Pembentukan Panitia, Tema Karnaval & Alokasi Anggaran</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <p class="paragraf">
+                    Mengingat sangat pentingnya acara ini demi kelancaran, kesuksesan, dan kekompakan warga RT 06, kehadiran perwakilan setiap rumah serta seluruh pemuda-pemudi RT 06 sangat diharapkan.
+                </p>
+
+                <p class="paragraf">
+                    Demikian surat undangan ini kami sampaikan. Atas perhatian, kesediaan waktu, dan partisipasi aktif Bapak/Ibu/Saudara/i, kami ucapkan terima kasih.
+                </p>
+
+                <!-- Penutup -->
+                <div class="salam-penutup">
+                    Wassalamu’alaikum Warahmatullahi Wabarakatuh.
+                </div>
+            </div>
+
+            <!-- Bagian Bawah Surat (Tanda Tangan & Catatan) -->
+            <div>
+                <!-- Tanda Tangan -->
+                <table class="ttd-wrapper">
+                    <tr>
+                        <td>
+                            <div class="jabatan">Ketua Pemuda RT06</div>
+                            <div class="nama-terang">( .................................... )</div>
+                        </td>
+                        <td>
+                            <div class="jabatan">Ketua RT 06</div>
+                            <div class="nama-terang">( .................................... )</div>
+                        </td>
+                    </tr>
+                </table>
+
+                <!-- Catatan Kaki -->
+                <div class="catatan-box">
+                    <span>* Catatan:</span> Mohon hadir tepat waktu. Bagi yang memiliki ide/karya kreatif untuk karnaval, dapat disampaikan saat rapat berlangsung.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Widget Pemutar Musik Melayang -->
+    <div class="music-widget">
+        <button id="musicBtn" class="btn-music" onclick="toggleMusic()">
+            🎵 Putar Musik Suasana
+        </button>
+        <audio id="bgMusic" loop>
+            <source src="https://upload.wikimedia.org/wikipedia/commons/2/23/Hari_Merdeka.ogg" type="audio/ogg">
+            Browser Anda tidak mendukung pemutar audio.
+        </audio>
+    </div>
+
+    <!-- JavaScript Pemutar Musik -->
+    <script>
+        function toggleMusic() {
+            var music = document.getElementById("bgMusic");
+            var btn = document.getElementById("musicBtn");
+            
+            if (music.paused) {
+                music.play();
+                btn.innerHTML = "⏸️ Hentikan Musik";
+            } else {
+                music.pause();
+                btn.innerHTML = "🎵 Putar Musik Suasana";
+            }
+        }
+    </script>
+
+</body>
+</html>
