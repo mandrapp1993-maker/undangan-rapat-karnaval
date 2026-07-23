@@ -140,7 +140,6 @@
             box-shadow: 0 8px 25px rgba(197, 160, 89, 0.6);
         }
 
-        /* Hidden Class untuk menutup sampul */
         .cover-hidden {
             opacity: 0;
             visibility: hidden;
@@ -463,12 +462,12 @@
         <!-- Bar Tombol Atas -->
         <div class="action-bar">
             <div class="btn-group">
-                <button class="btn btn-primary" onclick="window.print()">
+                <button class="btn btn-primary" onclick="printPDF()">
                     🖨️ Cetak / PDF
                 </button>
-                <a href="https://api.whatsapp.com/send?text=Undangan%20Rapat%20Karnaval%20RT%2006" target="_blank" class="btn btn-success">
+                <button class="btn btn-success" onclick="shareToWhatsApp()">
                     💬 Bagikan WA
-                </a>
+                </button>
             </div>
             <div class="btn-group">
                 <button class="btn btn-gold" onclick="addToCalendar()">
@@ -615,7 +614,6 @@
             var cover = document.getElementById("coverOverlay");
             cover.classList.add("cover-hidden");
 
-            // Putar Musik Secara Otomatis setelah diklik
             music.play().then(() => {
                 musicText.innerText = "Hentikan Musik";
             }).catch((err) => {
@@ -635,7 +633,28 @@
             }
         }
 
-        // 3. Countdown Timer Realtime
+        // 3. Fungsi Bagikan ke WhatsApp
+        function shareToWhatsApp() {
+            var message = "*Kepada Yth. Bapak/Ibu/Saudara/i Warga RT 06*\n\n" +
+                          "Berikut Surat Undangan Resmi Rapat Musyawarah Karnaval Kemerdekaan RI RT 06 Bendotretek.\n\n" +
+                          "Silakan klik tautan di bawah ini untuk membaca surat undangan selengkapnya:\n" +
+                          "https://mandrapp1993-maker.github.io/undangan-rapat-karnaval/";
+            
+            var waUrl = "https://api.whatsapp.com/send?text=" + encodeURIComponent(message);
+            window.open(waUrl, '_blank');
+        }
+
+        // 4. Fungsi Cetak PDF (Optimasi HP & Laptop)
+        function printPDF() {
+            var isMobile = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+                alert("Petunjuk Simpan PDF di HP:\n1. Tampilan Cetak akan terbuka.\n2. Pilih Printer: 'Simpan sebagai PDF' / 'Save as PDF'.\n3. Pastikan Ukuran Kertas 'A4'.\n4. Klik tombol Simpan/Download.");
+            }
+            window.print();
+        }
+
+        // 5. Countdown Timer Realtime
         const eventDate = new Date("Aug 8, 2026 19:30:00").getTime();
         setInterval(function() {
             const now = new Date().getTime();
@@ -649,7 +668,7 @@
             }
         }, 1000);
 
-        // 4. Integrasi Kalender Google
+        // 6. Integrasi Kalender Google
         function addToCalendar() {
             const calUrl = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Rapat+Musyawarah+Karnaval+RT+06&dates=20260808T123000Z/20260808T150000Z&details=Rapat+Koordinasi+Karnaval+HUT+RI+RT06&location=Balai+Warga+RT+06";
             window.open(calUrl, '_blank');
