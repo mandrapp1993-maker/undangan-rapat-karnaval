@@ -10,9 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Library html2pdf.js untuk Direct Download PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
     <style>
         :root {
             --primary-color: #0f1e2e;   /* Midnight Navy */
@@ -22,9 +19,7 @@
             --bg-body: #e9ecef;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Merriweather', serif;
@@ -38,7 +33,7 @@
         }
 
         /* ----------------------------------------------------
-           1. HALAMAN SAMPUL / COVER OPENING (DIGITAL SCREEN)
+           1. HALAMAN SAMPUL / COVER OPENING
         ---------------------------------------------------- */
         #coverOverlay {
             position: fixed;
@@ -136,11 +131,6 @@
             gap: 8px;
         }
 
-        .btn-open:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(197, 160, 89, 0.6);
-        }
-
         .cover-hidden {
             opacity: 0;
             visibility: hidden;
@@ -150,14 +140,12 @@
         /* ----------------------------------------------------
            2. TAMPILAN LEMBAR SURAT UTAMA
         ---------------------------------------------------- */
-        .main-wrapper {
-            padding: 25px 10px;
-        }
+        .main-wrapper { padding: 25px 10px; }
 
-        /* Container Surat Disesuaikan khusus Format A4 */
         .surat-card {
             position: relative;
-            width: 210mm;
+            width: 100%;
+            max-width: 210mm;
             min-height: 297mm;
             padding: 20mm 20mm;
             margin: 0 auto;
@@ -180,21 +168,6 @@
             border: 1px solid rgba(197, 160, 89, 0.3);
             pointer-events: none;
             z-index: 1;
-        }
-
-        .surat-card::before {
-            content: "";
-            position: absolute;
-            top: 52%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 320px;
-            height: 320px;
-            background: url('https://upload.wikimedia.org/wikipedia/commons/9/90/National_emblem_of_Indonesia_Garuda_Pancasila.svg') no-repeat center center;
-            background-size: contain;
-            opacity: 0.035;
-            pointer-events: none;
-            z-index: 0;
         }
 
         .content-wrapper {
@@ -345,7 +318,7 @@
             border: 1px dashed #ddd;
         }
 
-        /* Top Action Bar */
+        /* Action Bar */
         .action-bar {
             width: 100%;
             max-width: 210mm;
@@ -398,16 +371,10 @@
             gap: 8px;
         }
 
-        /* MEDIA QUERIES (MOBILE RESPONSIVE) */
+        /* Mobile View Adjustment */
         @media screen and (max-width: 768px) {
             .main-wrapper { padding: 10px 5px; }
-            .surat-card { 
-                width: 100%;
-                max-width: 100%;
-                padding: 25px 18px; 
-                min-height: auto; 
-                height: auto; 
-            }
+            .surat-card { padding: 25px 18px; min-height: auto; height: auto; }
             .inner-border { display: none; }
             .kop-surat h2 { font-size: 12pt; }
             .kop-surat h3 { font-size: 8.5pt; }
@@ -416,11 +383,54 @@
             .action-bar { justify-content: center; }
             .btn-group { width: 100%; justify-content: center; flex-wrap: wrap; }
         }
+
+        /* ----------------------------------------------------
+           3. ATURAN KHUSUS METODE CETAK/SIMPAN PDF (PRINT CSS)
+        ---------------------------------------------------- */
+        @page {
+            size: A4 portrait;
+            margin: 0;
+        }
+
+        @media print {
+            /* Sembunyikan semua elemen UI digital */
+            #coverOverlay, .action-bar, .music-widget, .countdown-container {
+                display: none !important;
+            }
+
+            body {
+                background: #ffffff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            .main-wrapper {
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .surat-card {
+                box-shadow: none !important;
+                border: none !important;
+                width: 210mm !important;
+                height: 297mm !important;
+                padding: 15mm 15mm !important;
+                margin: 0 !important;
+                page-break-after: avoid !important;
+                page-break-inside: avoid !important;
+            }
+
+            .inner-border {
+                display: block !important;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <!-- 1. OVERLAY SAMPUL DEPAN (SAMPUL DIGITAL COVER) -->
+    <!-- 1. OVERLAY SAMPUL DEPAN -->
     <div id="coverOverlay">
         <div class="cover-card">
             <div class="cover-icon"></div>
@@ -439,12 +449,10 @@
 
     <!-- 2. KONTEN UTAMA LEMBAR SURAT -->
     <div class="main-wrapper">
-        <!-- Bar Tombol Atas -->
         <div class="action-bar">
             <div class="btn-group">
-                <!-- Tombol Berubah menjadi Direct Download PDF -->
-                <button class="btn btn-primary" id="downloadBtn" onclick="downloadPDF()">
-                    📥 Unduh PDF
+                <button class="btn btn-primary" onclick="handlePDFSave()">
+                    📄 Simpan PDF
                 </button>
                 <button class="btn btn-success" onclick="shareToWhatsApp()">
                     💬 Bagikan WA
@@ -457,8 +465,7 @@
             </div>
         </div>
 
-        <!-- Lembar Surat Utama yang Akan Dikonversi ke PDF -->
-        <div class="surat-card" id="suratElement">
+        <div class="surat-card">
             <div class="inner-border"></div>
 
             <div class="content-wrapper">
@@ -515,7 +522,7 @@
                             </tr>
                             <tr>
                                 <td class="label">Waktu</td>
-                                <td>:</td>
+                               <td>:</td>
                                 <td>19.30 WIB (Ba'da Isya) - Selesai</td>
                             </tr>
                             <tr>
@@ -531,8 +538,8 @@
                         </table>
                     </div>
 
-                    <!-- Countdown (Otomatis disembunyikan saat unduh PDF) -->
-                    <div class="countdown-container" id="countdownWidget">
+                    <!-- Countdown -->
+                    <div class="countdown-container">
                         <div class="countdown-title">⏳ Hitung Mundur Menuju Rapat Warga</div>
                         <div class="timer-grid">
                             <div class="timer-box"><span class="timer-num" id="days">00</span><span class="timer-label">Hari</span></div>
@@ -590,7 +597,6 @@
         var music = document.getElementById("bgMusic");
         var musicText = document.getElementById("musicText");
 
-        // 1. Fungsi Buka Undangan Sampul & Auto-Play Musik
         function openInvitation() {
             var cover = document.getElementById("coverOverlay");
             cover.classList.add("cover-hidden");
@@ -602,7 +608,6 @@
             });
         }
 
-        // 2. Control On/Off Musik Manual
         function toggleMusic(e) {
             if (e) e.stopPropagation();
             if (music.paused) {
@@ -614,43 +619,11 @@
             }
         }
 
-        // 3. Fungsi Direct Download PDF (Tandai & Sembunyikan elemen non-surat saat proses)
-        function downloadPDF() {
-            var btn = document.getElementById("downloadBtn");
-            var countdown = document.getElementById("countdownWidget");
-            var element = document.getElementById("suratElement");
-
-            // Ubah Teks Tombol Loading
-            btn.innerText = "⏳ Memproses PDF...";
-            btn.disabled = true;
-
-            // Sembunyikan Countdown sementara
-            countdown.style.display = "none";
-
-            // Konfigurasi Kertas PDF A4
-            var opt = {
-                margin:       0,
-                filename:     'Surat_Undangan_Rapat_RT06.pdf',
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true, logging: false },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            // Jalankan konversi ke PDF lalu unduh
-            html2pdf().set(opt).from(element).save().then(function() {
-                // Kembalikan tampilan tombol & countdown
-                countdown.style.display = "block";
-                btn.innerText = "📥 Unduh PDF";
-                btn.disabled = false;
-            }).catch(function(err) {
-                alert("Gagal mengunduh PDF, silakan coba lagi.");
-                countdown.style.display = "block";
-                btn.innerText = "📥 Unduh PDF";
-                btn.disabled = false;
-            });
+        // Fungsi Simpan/Cetak PDF Bawaan Sistem HP (100% Bebas Error)
+        function handlePDFSave() {
+            window.print();
         }
 
-        // 4. Fungsi Bagikan ke WhatsApp
         function shareToWhatsApp() {
             var message = "*Kepada Yth. Bapak/Ibu/Saudara/i Warga RT 06*\n\n" +
                           "Berikut Surat Undangan Resmi Rapat Musyawarah Karnaval Kemerdekaan RI RT 06 Bendotretek.\n\n" +
@@ -661,7 +634,6 @@
             window.open(waUrl, '_blank');
         }
 
-        // 5. Countdown Timer Realtime
         const eventDate = new Date("Aug 8, 2026 19:30:00").getTime();
         setInterval(function() {
             const now = new Date().getTime();
@@ -675,7 +647,6 @@
             }
         }, 1000);
 
-        // 6. Integrasi Kalender Google
         function addToCalendar() {
             const calUrl = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Rapat+Musyawarah+Karnaval+RT+06&dates=20260808T123000Z/20260808T150000Z&details=Rapat+Koordinasi+Karnaval+HUT+RI+RT06&location=Balai+Warga+RT+06";
             window.open(calUrl, '_blank');
